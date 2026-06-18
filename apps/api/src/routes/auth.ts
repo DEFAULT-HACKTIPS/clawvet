@@ -7,9 +7,11 @@ const GITHUB_CLIENT_SECRET = process.env.GITHUB_CLIENT_SECRET || "";
 const GITHUB_REDIRECT_URI =
   process.env.GITHUB_REDIRECT_URI ||
   "http://localhost:3001/api/v1/auth/github/callback";
-const JWT_SECRET = process.env.JWT_SECRET || "clawvet-dev-secret-change-me";
 const WEB_URL = process.env.WEB_URL || "http://localhost:3000";
-
+const JWT_SECRET = process.env.JWT_SECRET;
+if (!JWT_SECRET) {
+  throw new Error("JWT_SECRET environment variable is required but not set");
+}
 function signJwt(payload: Record<string, unknown>, expiresInHours = 168): string {
   const header = { alg: "HS256", typ: "JWT" };
   const now = Math.floor(Date.now() / 1000);
